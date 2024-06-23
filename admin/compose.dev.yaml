@@ -1,0 +1,41 @@
+services:
+  admin:
+    build:
+      context: web
+      target: dev
+    extends:
+      file: compose.yaml
+      service: admin
+    volumes:
+      - ./web/node_modules:/app/node_modules:rw
+      - ./web/.svelte-kit:/app/.svelte-kit:rw
+      - ./web/src:/app/src:ro
+      - ./web/static:/app/static:ro
+
+  authelia:
+    extends:
+      file: compose.yaml
+      service: authelia
+
+  pgadmin:
+    extends:
+      file: compose.yaml
+      service: pgadmin
+
+volumes:
+  pgadmin:
+
+
+secrets:
+  resend_token:
+    file: "../secrets/resend/token"
+
+  authelia_reset_password_jwt_secret:
+    file: "../secrets/authelia/reset_password_jwt_secret"
+  authelia_session_secret:
+    file: "../secrets/authelia/session_secret"
+  authelia_storage_encryption_key:
+    file: "../secrets/authelia/storage_encryption_key"
+
+  pgadmin_password:
+    file: "../secrets/pgadmin/password"

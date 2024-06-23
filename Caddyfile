@@ -1,0 +1,33 @@
+{$DOMAIN} {
+	reverse_proxy web:3000
+}
+
+{$ADMIN_DOMAIN} {
+	@auth path /auth /auth/*
+	handle @auth {
+		header >x-frame-options "SAMEORIGIN"
+		header >content-security-policy "frame-src 'none'" "frame-src 'self'"
+		header >content-security-policy "frame-ancestors 'none'" "frame-ancestors 'self'"
+		reverse_proxy authelia:9091
+	}
+
+	handle {
+		forward_auth authelia:9091 {
+			uri /api/authz/forward-auth
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+
+		handle /embed/* {
+			handle /embed/db/* {
+				reverse_proxy pgadmin:80
+			}
+			handle {
+				respond "Not Found" 404
+			}
+		}
+
+		handle {
+			reverse_proxy admin:3000
+		}
+	}
+}

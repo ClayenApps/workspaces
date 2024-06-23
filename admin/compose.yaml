@@ -1,0 +1,62 @@
+services:
+  admin:
+    image: ghcr.io/clayenapps/workspaces-admin:latest
+    build: web
+    init: true
+    expose: [ 3000 ]
+    restart: unless-stopped
+    env_file: [ ../.env ]
+
+  authelia:
+    image: 'authelia/authelia:4.38.8'
+    restart: 'unless-stopped'
+    expose: [ 9091 ]
+    env_file: [ ../.env ]
+    secrets:
+      - resend_token
+      - authelia_reset_password_jwt_secret
+      - authelia_session_secret
+      - authelia_storage_encryption_key
+    environment:
+      X_AUTHELIA_CONFIG_FILTERS: template
+    volumes:
+      - ./authelia/configuration.yml:/config/configuration.yml:ro
+      - ./authelia/db.sqlite3:/config/db.sqlite3
+      - ./authelia/users.yml:/config/users.yml
+
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    expose: [ 80 ]
+    restart: unless-stopped
+    environment:
+      SCRIPT_NAME: "/embed/db"
+      PGADMIN_DEFAULT_EMAIL: admin@clayenkitten.ru
+      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/password
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+      - ./pgadmin/config_local.py:/pgadmin4/config_local.py:ro
+    secrets:
+      [
+        postgres_db,
+        postgres_user,
+        postgres_password,
+        pgadmin_password
+      ]
+
+volumes:
+  pgadmin:
+
+
+secrets:
+  resend_token:
+    file: "../secrets/resend/token"
+
+  authelia_reset_password_jwt_secret:
+    file: "../secrets/authelia/reset_password_jwt_secret"
+  authelia_session_secret:
+    file: "../secrets/authelia/session_secret"
+  authelia_storage_encryption_key:
+    file: "../secrets/authelia/storage_encryption_key"
+
+  pgadmin_password:
+    file: "../secrets/pgadmin/password"
