@@ -35,7 +35,7 @@ password_policy:
 access_control:
   default_policy: "one_factor"
   rules:
-    - domain: '{{ mustEnv "ADMIN_DOMAIN" }}'
+    - domain: 'admin.{{ mustEnv "DOMAIN" }}'
       policy: two_factor
       resources:
       - '^/embed/db([/?].*)?$'
@@ -44,9 +44,9 @@ session:
   secret: {{ secret "/run/secrets/authelia_session_secret" }}
   cookies:
     - name: "clayen_workspaces_admin_session"
-      domain: '{{ mustEnv "ADMIN_DOMAIN" }}'
-      authelia_url: "https://{{ mustEnv "ADMIN_DOMAIN" }}/auth/"
-      default_redirection_url: "https://{{ mustEnv "ADMIN_DOMAIN" }}/"
+      domain: 'admin.{{ mustEnv "DOMAIN" }}'
+      authelia_url: "https://admin.{{ mustEnv "DOMAIN" }}/auth/"
+      default_redirection_url: "https://admin.{{ mustEnv "DOMAIN" }}/"
       same_site: "lax"
       inactivity: "5 minutes"
       expiration: "1 hour"

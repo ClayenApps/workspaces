@@ -6,7 +6,7 @@ api.{$DOMAIN} {
 	reverse_proxy api:3000
 }
 
-{$ADMIN_DOMAIN} {
+admin.{$DOMAIN} {
 	@auth path /auth /auth/*
 	handle @auth {
 		header >x-frame-options "SAMEORIGIN"
