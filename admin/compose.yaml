@@ -31,17 +31,11 @@ services:
     environment:
       SCRIPT_NAME: "/embed/db"
       PGADMIN_DEFAULT_EMAIL: admin@clayenkitten.ru
-      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/password
+      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/pgadmin_password
     volumes:
       - pgadmin:/var/lib/pgadmin
       - ./pgadmin/config_local.py:/pgadmin4/config_local.py:ro
-    secrets:
-      [
-        postgres_db,
-        postgres_user,
-        postgres_password,
-        pgadmin_password
-      ]
+    secrets: [ pg_db, pg_user, pg_password, pgadmin_password ]
 
 volumes:
   pgadmin:

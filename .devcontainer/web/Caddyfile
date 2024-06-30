@@ -1,0 +1,11 @@
+{
+	http_port 8080
+}
+
+http://{$DOMAIN} {
+	reverse_proxy dev:3000
+}
+
+http://api.{$DOMAIN} {
+	reverse_proxy api:3000
+}

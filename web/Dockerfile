@@ -1,10 +1,3 @@
-FROM node:21-alpine as dev
-
-WORKDIR /app
-COPY . .
-RUN npm install
-CMD npm run dev -- --port 3000
-
 FROM node:21-alpine as build
 
 WORKDIR /app

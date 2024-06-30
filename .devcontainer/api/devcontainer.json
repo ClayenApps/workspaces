@@ -1,0 +1,24 @@
+{
+  "name": "API",
+  "dockerComposeFile": ["compose.yaml"],
+  "workspaceFolder": "/workspaces",
+  "service": "dev",
+  "runServices": ["gateway", "db", "web"],
+  "features": {
+    "ghcr.io/prulloac/devcontainer-features/bun:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "matthewpi.caddyfile-support",
+        "esbenp.prettier-vscode",
+        "jaaxxx.bun-lockb"
+      ],
+      "settings": {
+        "remote.autoForwardPorts": false
+      }
+    }
+  },
+  "forwardPorts": ["gateway:8080"]
+}

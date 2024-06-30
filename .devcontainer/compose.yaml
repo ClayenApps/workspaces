@@ -1,0 +1,34 @@
+services:
+  dev:
+    build: .
+    volumes:
+      - ..:/workspaces
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  web:
+    extends:
+      file: ../compose.yaml
+      service: web
+
+  api:
+    extends:
+      file: ../compose.yaml
+      service: api
+
+  db:
+    extends:
+      file: ../compose.yaml
+      service: db
+
+volumes:
+  caddy_data:
+  caddy_config:
+  db:
+
+secrets:
+  pg_db:
+    file: "../secrets/postgres/db"
+  pg_user:
+    file: "../secrets/postgres/user"
+  pg_password:
+    file: "../secrets/postgres/password"

@@ -2,6 +2,10 @@
 	reverse_proxy web:3000
 }
 
+api.{$DOMAIN} {
+	reverse_proxy api:3000
+}
+
 {$ADMIN_DOMAIN} {
 	@auth path /auth /auth/*
 	handle @auth {

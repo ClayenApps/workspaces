@@ -1,0 +1,13 @@
+include:
+  - ../compose.yaml
+
+services:
+  gateway:
+    image: caddy:2.8-alpine
+    cap_add: [NET_ADMIN]
+    env_file: [../../.env]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    entrypoint: caddy run --watch --config /etc/caddy/Caddyfile

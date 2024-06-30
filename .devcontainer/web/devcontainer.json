@@ -1,0 +1,25 @@
+{
+  "name": "Web",
+  "dockerComposeFile": ["compose.yaml"],
+  "workspaceFolder": "/workspaces",
+  "service": "dev",
+  "runServices": ["gateway", "db", "api"],
+  "features": {
+    "ghcr.io/prulloac/devcontainer-features/bun:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "matthewpi.caddyfile-support",
+        "svelte.svelte-vscode",
+        "esbenp.prettier-vscode",
+        "jaaxxx.bun-lockb"
+      ],
+      "settings": {
+        "remote.autoForwardPorts": false
+      }
+    }
+  },
+  "forwardPorts": ["gateway:8080"]
+}
